@@ -6,7 +6,7 @@ use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Request;
 
-class TestCommand extends UserCommand
+class HelpCommand extends UserCommand
 {
     protected $name = 'help';                      
     protected $description = 'Команда для отображения списка команд'; 
