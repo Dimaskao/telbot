@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/vendor/autoload.php";
-require __FILE__ . "secret.php";//TODO: Возможно изменить на .env
+require_once __DIR__ . "/secret.php"
 
 
 $API_KEY = $token; 
