@@ -10,7 +10,7 @@ class TestCommand extends UserCommand
 {
     protected $name = 'add';
     protected $description = 'Добавления новых слов в словарь изучения';
-    protected $usage = '/add';
+    protected $usage = '/help';
     protected $version = '1.0.0';
 
     public function execute(): ServerResponse

@@ -10,7 +10,7 @@ class HelpCommand extends UserCommand
 {
     protected $name = 'help';                      
     protected $description = 'Команда для отображения списка команд'; 
-    protected $usage = '/help';                    
+    protected $usage = '/add';                    
     protected $version = '1.0.0';                  
 
     public function execute(): ServerResponse
