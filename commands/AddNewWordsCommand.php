@@ -18,10 +18,10 @@ class AddnewwordsCommand extends UserCommand
         $message = $this->getMessage();
         $chat_id = $message->getChat()->getId();
 
-        $text = $message->getText();
+        //$text = $message->getText();
         $data = [
             'chat_id' => $chat_id,
-            'text'    => $text,
+            'text'    => "test",
         ];
 
         return Request::sendMessage($data);
