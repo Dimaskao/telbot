@@ -21,7 +21,9 @@ class HelpCommand extends UserCommand
 
         $data = [
             'chat_id' => $chat_id,
-            'text'    => '/help - получить список команд',
+            'text'    => '/help - получить список команд
+                          /фвв
+            ',
         ];
 
         return Request::sendMessage($data);
