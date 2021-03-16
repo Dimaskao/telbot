@@ -8,9 +8,9 @@ use Longman\TelegramBot\Request;
 
 class HelpCommand extends UserCommand
 {
-    protected $name = 'add';                      
+    protected $name = 'help';                      
     protected $description = 'Команда для отображения списка команд'; 
-    protected $usage = '/add';                    
+    protected $usage = '/help';                    
     protected $version = '1.0.0';                  
 
     public function execute(): ServerResponse
