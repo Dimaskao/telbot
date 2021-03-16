@@ -8,7 +8,7 @@ use Longman\TelegramBot\Request;
 
 class TestCommand extends UserCommand
 {
-    protected $name = 'add';
+    protected $name = 'help';
     protected $description = 'Добавления новых слов в словарь изучения';
     protected $usage = '/help';
     protected $version = '1.0.0';
