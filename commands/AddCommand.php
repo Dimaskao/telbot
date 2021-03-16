@@ -6,7 +6,7 @@ use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Request;
 
-class TestCommand extends UserCommand
+class AddCommand extends UserCommand
 {
     protected $name = 'add';
     protected $description = 'Добавления новых слов в словарь изучения';
