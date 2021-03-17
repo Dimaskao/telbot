@@ -22,9 +22,9 @@ class HelpCommand extends UserCommand
         $t = $commands->getResult();
         $data = [
             'chat_id' => $chat_id,
-            'text'    => "/help - получить список команд \n/add - добавить новые слова в словарь изучения\n$t",
+            'text'    => $t[0],
         ];
-
+        // /help - получить список команд \n/add - добавить новые слова в словарь изучения\n"
         return Request::sendMessage($data);
     }
 }
