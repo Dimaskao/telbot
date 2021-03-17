@@ -20,7 +20,7 @@ class HelpCommand extends UserCommand
         $chat_id = $message->getChat()->getId();
         $commands = Request::getMyCommands();
         $t = $commands->getResult();
-        $text = '';
+        $text = 'q';
         foreach ($t as $com) {
             $text = ' ' . $com; 
         }
