@@ -18,7 +18,7 @@ class AddCommand extends UserCommand
         $message = $this->getMessage();
         $chat_id = $message->getChat()->getId();
 
-        $text = $message->getText();
+        $text = Request::getMyCommands();
         $data = [
             'chat_id' => $chat_id,
             'text'    => $text,
