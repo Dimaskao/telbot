@@ -35,6 +35,6 @@ class AddCommand extends UserCommand
     foreach ($wordsList as $i => $word ) {
     $wordsList[$i] = trim($word);
     }
-    return Request::sendMessage($onlyWords);
+   
     }
 }
