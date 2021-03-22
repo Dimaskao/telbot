@@ -19,16 +19,11 @@ class HelpCommand extends UserCommand
 
         $chat_id = $message->getChat()->getId();
         $commands = Request::getMyCommands();
-        $t = $commands->getResult();
-        $text = 'q';
-        foreach ($t as $com) {
-            $text = ' ' . $com; 
-        }
+
         $data = [
             'chat_id' => $chat_id,
-            'text'    => $text,
+            'text'    => '/help - получить список команд \n/add - добавить новые слова в словарь изучения\n"',
         ];
-        // /help - получить список команд \n/add - добавить новые слова в словарь изучения\n"
         return Request::sendMessage($data);
     }
 }

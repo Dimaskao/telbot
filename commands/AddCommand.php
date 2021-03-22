@@ -5,6 +5,7 @@ namespace Longman\TelegramBot\Commands\UserCommands;
 use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Request;
+use Longman\TelegramBot\DB;
 
 class AddCommand extends UserCommand
 {
@@ -25,5 +26,15 @@ class AddCommand extends UserCommand
         ];
 
         return Request::sendMessage($data);
+    }
+
+    private function SaveWords($message): void
+    {
+    $onlyWords = str_replace('/app', '', $message);
+    $wordsList = explode(';', $onlyWords);
+    foreach ($wordsList as $i => $word ) {
+    $wordsList[$i] = trim($word);
+    }
+    return Request::sendMessage($onlyWords);
     }
 }
