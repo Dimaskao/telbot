@@ -42,7 +42,7 @@ class DelCommand extends UserCommand
         }
         $onlyWord = trim($onlyWord);
 
-        require_once $_SERVER['DOCUMENT_ROOT'] . "db.php";
+        require_once "db.php";
         $sql = "DELETE FROM `words_to_learn` WHERE `word` = '$onlyWord' AND `user_id` = $user_id";
         $result = $pdo->exec($sql);
         echo $result . "s";
