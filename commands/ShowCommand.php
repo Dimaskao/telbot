@@ -19,7 +19,7 @@ class ShowCommand extends UserCommand
         $message = $this->getMessage();
         $chat_id = $message->getChat()->getId();
 
-        require_once '/Users/dima/www/telbot/db.php';
+        require_once $_SERVER['DOCUMENT_ROOT'] . "db.php";
         $result = $pdo->query('SELECT `word` FROM words_to_learn');
         $text = '';
         while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {

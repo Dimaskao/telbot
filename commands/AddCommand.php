@@ -40,7 +40,7 @@ class AddCommand extends UserCommand
         if ($onlyWords == '') {
             throw new \Exception("Пожалкйста, напишите хотя бы одно слово. Используйте команнду /add. Слова разделяйте ';'");
         }
-        require_once '/Users/dima/www/telbot/db.php';
+        require_once $_SERVER['DOCUMENT_ROOT'] . "db.php";
         //Убрать уязвимость инекций
         $wordsList = explode(';', $onlyWords);
         foreach ($wordsList as $k => $word ) {
