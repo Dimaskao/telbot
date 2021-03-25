@@ -18,9 +18,10 @@ class ShowCommand extends UserCommand
     {
         $message = $this->getMessage();
         $chat_id = $message->getChat()->getId();
+        $user_id = $message->getFrom()->getId();
 
         require_once 'db.php';
-        $result = $pdo->query('SELECT `word` FROM words_to_learn');
+        $result = $pdo->query("SELECT `word` FROM words_to_learn WHERE `user_id` = $user_id");
         $text = '';
         while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
             $text .= ' | ' . $row['word'];
