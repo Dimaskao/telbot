@@ -2,10 +2,10 @@
 
 namespace Longman\TelegramBot\Commands\UserCommands;
 
+use Exception;
 use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Request;
-use Longman\TelegramBot\DB;
 
 class AddCommand extends UserCommand
 {
@@ -18,23 +18,37 @@ class AddCommand extends UserCommand
     {
         $message = $this->getMessage();
         $chat_id = $message->getChat()->getId();
-        
+        $user_id = $message->getFrom()->getId();
         $text = $message->getText();
+        try{
+            $this->SaveWords($text, $user_id);
+        }catch(Exception $e){
+            $text = $e->getMessage();
+        }
+
         $data = [
             'chat_id' => $chat_id,
             'text'    => $text,
         ];
-
+        
         return Request::sendMessage($data);
     }
 
-    private function SaveWords($message): void
+    private function SaveWords($message, $user_id): void
     {
-    $onlyWords = str_replace('/app', '', $message);
-    $wordsList = explode(';', $onlyWords);
-    foreach ($wordsList as $i => $word ) {
-    $wordsList[$i] = trim($word);
-    }
-   
+        $onlyWords = str_replace('/add', '', $message);
+        if ($onlyWords == '') {
+            throw new \Exception("Пожалкйста, напишите хотя бы одно слово. Используйте команнду /add. Слова разделяйте ';'");
+        }
+        require_once '/Users/dima/www/telbot/db.php';
+        //Убрать уязвимость инекций
+        $wordsList = explode(';', $onlyWords);
+        foreach ($wordsList as $k => $word ) {
+            $word = trim($word);
+            $sql = "INSERT INTO words_to_learn (`user_id`, `word`) VALUES ($user_id, '$word')";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+        }
+
     }
 }
