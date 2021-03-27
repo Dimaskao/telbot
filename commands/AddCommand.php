@@ -19,7 +19,7 @@ class AddCommand extends UserCommand
         $message = $this->getMessage();
         $chat_id = $message->getChat()->getId();
         $user_id = $message->getFrom()->getId();
-        $text = $message->getText();
+        $text = $message->getText(true);
         try{
             $this->SaveWords($text, $user_id);
         }catch(Exception $e){
@@ -36,13 +36,12 @@ class AddCommand extends UserCommand
 
     private function SaveWords($message, $user_id): void
     {
-        $onlyWords = str_replace('/add', '', $message);
-        if ($onlyWords == '') {
+        if ($message == '') {
             throw new \Exception("Пожалкйста, напишите хотя бы одно слово. Используйте команнду /add. Слова разделяйте ';'");
         }
         require_once "db.php";
         //Убрать уязвимость инекций
-        $wordsList = explode(';', $onlyWords);
+        $wordsList = explode(';', $message);
         foreach ($wordsList as $k => $word ) {
             $word = trim($word);
             $sql = "INSERT INTO words_to_learn (`user_id`, `word`) VALUES ($user_id, '$word')";

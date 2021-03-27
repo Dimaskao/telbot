@@ -19,7 +19,7 @@ class DelCommand extends UserCommand
         $message = $this->getMessage();
         $chat_id = $message->getChat()->getId();
         $user_id = $message->getFrom()->getId();
-        $text = $message->getText();
+        $text = $message->getText(true);
         try{
             $this->DelWords($text, $user_id);
         }catch(Exception $e){
@@ -36,11 +36,10 @@ class DelCommand extends UserCommand
 
     private function DelWords($message, $user_id): void
     {
-        $onlyWord = str_replace('/del', '', $message);
-        if ($onlyWord == '') {
+        if ($message == '') {
             throw new \Exception("Пожалкйста, укажите слово которое хотите удалить");
         }
-        $onlyWord = trim($onlyWord);
+        $onlyWord = trim($message);
 
         require_once "db.php";
         $sql = "DELETE FROM `words_to_learn` WHERE `word` = '$onlyWord' AND `user_id` = $user_id";
