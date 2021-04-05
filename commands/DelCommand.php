@@ -11,7 +11,7 @@ class DelCommand extends UserCommand
 {
     protected $name = 'del';
     protected $description = 'Удалеие слов';
-    protected $usage = '/del';
+    protected $usage = '/del слово | Указывайте только одно слово!';
     protected $version = '1.0.0';
 
     public function execute(): ServerResponse
@@ -19,19 +19,14 @@ class DelCommand extends UserCommand
         $message = $this->getMessage();
         $chat_id = $message->getChat()->getId();
         $user_id = $message->getFrom()->getId();
-        $text = $message->getText(true);
+        $word = $message->getText(true);
         try{
-            $this->DelWords($text, $user_id);
+            $this->DelWords($word, $user_id);
         }catch(Exception $e){
-            $text = $e->getMessage();
+            return $this->replyToChat($e->getMessage());
         }
-
-        $data = [
-            'chat_id' => $chat_id,
-            'text'    => $text,
-        ];
         
-        return Request::sendMessage($data);
+        return $this->replyToChat('Слово "' . $word . '" удалено');
     }
 
     private function DelWords($message, $user_id): void
@@ -44,7 +39,7 @@ class DelCommand extends UserCommand
         require_once "db.php";
         $sql = "DELETE FROM `words_to_learn` WHERE `word` = '$onlyWord' AND `user_id` = $user_id";
         $result = $pdo->exec($sql);
-        echo $result . "s";
+
         if ( !$result ) {
             throw new Exception('Слово не найдено');
         }

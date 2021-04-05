@@ -10,7 +10,7 @@ use Longman\TelegramBot\Request;
 class ShowCommand extends UserCommand
 {
     protected $name = 'show';
-    protected $description = 'Ткстовая команда';
+    protected $description = 'Отображает изучаемые слова';
     protected $usage = '/show';
     protected $version = '1.0.0';
 
@@ -21,20 +21,14 @@ class ShowCommand extends UserCommand
         $user_id = $message->getFrom()->getId();
         require_once 'db.php';
         $result = $pdo->query("SELECT `word` FROM words_to_learn WHERE `user_id` = $user_id");
-        $text = '';
+        $words = '';
         while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
-            $text .= ' | ' . $row['word'];
+            $words .= ' | ' . $row['word'];
         }
-        if(!$text){
-            $text = "Вы еще не начали учить слова. Воспользуйтесь командой /add что бы добавить слова. Если больше одного слова, используйте ';' в качестве разделителя";
+        if(!$words){
+            return $this->replyToChat("Вы еще не начали учить слова. Воспользуйтесь командой /add что бы добавить слова. Если больше одного слова, используйте ';' в качестве разделителя");
         }
         
-        $data = [
-            'chat_id' => $chat_id,
-            'text'    => $text,
-        ];
-
-        //return Request::sendMessage($data);
-        return $this->replyToChat($text);
+        return $this->replyToChat($words);
     }
 }

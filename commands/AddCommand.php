@@ -10,8 +10,8 @@ use Longman\TelegramBot\Request;
 class AddCommand extends UserCommand
 {
     protected $name = 'add';
-    protected $description = 'Добавления новых слов в словарь изучения';
-    protected $usage = '/add';
+    protected $description = 'Добавления новых слов в словарь изучения.';
+    protected $usage = '/add слово - перевод; слово - перевод ...';
     protected $version = '1.0.0';
 
     public function execute(): ServerResponse
@@ -19,19 +19,14 @@ class AddCommand extends UserCommand
         $message = $this->getMessage();
         $chat_id = $message->getChat()->getId();
         $user_id = $message->getFrom()->getId();
-        $text = $message->getText(true);
+        $word = $message->getText(true);
         try{
-            $this->SaveWords($text, $user_id);
+            $this->SaveWords($word, $user_id);
         }catch(Exception $e){
-            $text = $e->getMessage();
+            return $this->replyToChat($e->getMessage());
         }
-
-        $data = [
-            'chat_id' => $chat_id,
-            'text'    => $text,
-        ];
         
-        return Request::sendMessage($data);
+        return $this->replyToChat('Слово "' . $word . '" добавлено');
     }
 
     private function SaveWords($message, $user_id): void
