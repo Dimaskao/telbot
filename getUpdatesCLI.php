@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
 require __DIR__ . '/vendor/autoload.php';
-
-$bot_api_key  = '1615051252:AAG8Vr68Ik5E5455Y2K2Tz2CgF0Rvwe4Nec';
+require "secret.php";//TODO: Возможно изменить на .env
+$bot_api_key  = $token;
 $bot_username = 'Learn english words';
 $USER_ID = 406235431;
 

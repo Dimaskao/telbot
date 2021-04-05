@@ -313,7 +313,8 @@ CREATE TABLE IF NOT EXISTS `request_limiter` (
 CREATE TABLE IF NOT EXISTS `words_to_learn` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `user_id` int,
-  `word` char(255),
+  `en_word` char(255),
+  `ru_word` char(225),
   PRIMARY KEY (`id`)
 );
 
