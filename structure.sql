@@ -313,9 +313,9 @@ CREATE TABLE IF NOT EXISTS `request_limiter` (
 CREATE TABLE IF NOT EXISTS `words_to_learn` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `user_id` int,
-  `en_word` char(255)
+  `en_word` char(255),
   PRIMARY KEY (`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 CREATE TABLE IF NOT EXISTS `learned_words` (
   `id` bigint NOT NULL AUTO_INCREMENT,
