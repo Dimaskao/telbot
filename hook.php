@@ -19,7 +19,7 @@ use Longman\TelegramBot\TelegramLog;
 try {
 	$telegram = new Telegram($API_KEY, $BOT_NAME);
 	$telegram->enableMySQL($mysql_credentials);
-	$telegram->runCommands(['/help']);
+	//$telegram->runCommands(['/help']);
 	$telegram->addCommandsPath(__DIR__ . "/commands");
 	$telegram->enableAdmin((int)$USER_ID);
 
