@@ -19,7 +19,6 @@ class ShowCommand extends UserCommand
         $message = $this->getMessage();
         $chat_id = $message->getChat()->getId();
         $user_id = $message->getFrom()->getId();
-        $this->telegram->executeCommand('help');
         require_once 'db.php';
         $result = $pdo->query("SELECT `word` FROM words_to_learn WHERE `user_id` = $user_id");
         $text = '';
@@ -35,6 +34,7 @@ class ShowCommand extends UserCommand
             'text'    => $text,
         ];
 
-        return Request::sendMessage($data);
+        //return Request::sendMessage($data);
+        return $this->replyToChat($text);
     }
 }
