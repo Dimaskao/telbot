@@ -5,19 +5,17 @@ namespace Longman\TelegramBot\Commands\UserCommands;
 use Exception;
 use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
-use Longman\TelegramBot\Request;
 
 class AddCommand extends UserCommand
 {
     protected $name = 'add';
-    protected $description = 'Добавления новых слов в словарь изучения.';
+    protected $description = 'Добавление новых слов в словарь изучения.';
     protected $usage = '/add слово - перевод; слово - перевод ...';
     protected $version = '1.0.0';
 
     public function execute(): ServerResponse
     {
         $message = $this->getMessage();
-        $chat_id = $message->getChat()->getId();
         $user_id = $message->getFrom()->getId();
         $word = $message->getText(true);
         try{
@@ -32,7 +30,7 @@ class AddCommand extends UserCommand
     private function SaveWords($message, $user_id): void
     {
         if ($message == '') {
-            throw new \Exception("Пожалкйста, напишите хотя бы одно слово. Используйте команнду /add. Слова разделяйте ';'");
+            throw new \Exception("Пожалуйста, напишите хотя бы одно слово. Используйте команнду /add. Слова разделяйте ';'");
         }
         require_once "db.php";
         //Убрать уязвимость инекций

@@ -5,7 +5,6 @@ namespace Longman\TelegramBot\Commands\UserCommands;
 use Exception;
 use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
-use Longman\TelegramBot\Request;
 
 class DelCommand extends UserCommand
 {
@@ -32,7 +31,7 @@ class DelCommand extends UserCommand
     private function DelWords($message, $user_id): void
     {
         if ($message == '') {
-            throw new \Exception("Пожалкйста, укажите слово которое хотите удалить");
+            throw new \Exception("Пожалуйста, укажите слово которое хотите удалить");
         }
         $onlyWord = trim($message);
 
