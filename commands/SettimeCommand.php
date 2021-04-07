@@ -109,7 +109,7 @@ class SettimeCommand extends UserCommand
                 // $this->replyToChat("fine");
                 // exit;
                 $hours = explode(',', $text);
-                if ($hours[0] > 0 && $hours[0] < 23 && $hours[1] > 0 && $hours[1] < 23 && $hours[0] <= $hours[1]) {
+                if ($hours[0] > 0 && $hours[0] <= 23 && $hours[1] > 0 && $hours[1] <= 23 && $hours[0] <= $hours[1]) {
                 }else{
                     $data['text'] = "Формат введенных данных не правильный";
                     $result = Request::sendMessage($data);
