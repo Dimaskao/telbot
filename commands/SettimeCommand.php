@@ -47,8 +47,9 @@ class SettimeCommand extends UserCommand
         !is_array($notes) && $notes = [];
 
         $state = $notes['state'] ?? 0;
-        if ( !isset($notes['days'])) {
-            $notes['days'] = '*';
+        if ( !isset($notes['days']) && !isset($notes['hours'])) {
+            $notes['days']  = '*';
+            $notes['hours'] = '10,20';
         }
 
         switch ($state) {
@@ -92,13 +93,35 @@ class SettimeCommand extends UserCommand
                 $data['reply_markup'] = Keyboard::remove(['selective' => true]);
                 $result = Request::sendMessage($data);
 
-                $text          = '';
-                
+                $text  = '';
+
             case 1:
+                if ($text === '') {
+                    $notes['state'] = 1;
+                    $this->conversation->update();
+
+                    $data['text'] = "В какое время вы хотите получать сообщения? Напишите в формате ОТ,ДО. например 10,22 - от 10 часов до 22";
+                    
+                    $result = Request::sendMessage($data);
+
+                    break;
+                }
+                // $this->replyToChat("fine");
+                // exit;
+                $hours = explode(',', $text);
+                if ($hours[0] > 0 && $hours[0] < 23 && $hours[1] > 0 && $hours[1] < 23 && $hours[0] <= $hours[1]) {
+                }else{
+                    $data['text'] = "Формат введенных данных не правильный";
+                    $result = Request::sendMessage($data);
+                    break;
+                }
+                $notes['hours'] = $text;
+                $text = '';
+            case 2:
                 $this->conversation->update();
                 unset($notes['state']);
                 
-                $data['text'] = $notes['days'];
+                $data['text'] = $notes['days'] . ' ' . $notes['hours'];
                 $this->conversation->stop();
                 $result = Request::sendMessage($data);
                 break;
