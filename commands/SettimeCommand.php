@@ -193,7 +193,7 @@ class SettimeCommand extends UserCommand
     {
         $cron_string = $notes['interval'] . ' ' . $notes['hours'] . ' * * ' . $notes['days'];
         exec('crontab -l | { cat; echo "#'. $user_id .'"; } | crontab -');
-        return exec('crontab -l | { cat; echo "'. $cron_string . ' ' . getcwd() . '/learningScript.php"; } | crontab -');
+        return exec('crontab -l | { cat; echo "'. $cron_string . ' php ' . getcwd() . '/learningScript.php"; } | crontab -');
     }
 
 }
