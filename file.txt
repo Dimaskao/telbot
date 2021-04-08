@@ -1,4 +1,0 @@
-0 10-22 * * * php /Users/dima/www/telbot/learningScript.php 4343
-0 10-22 * * * php /Users/dima/www/telbot/learningScript.php 3443
-0 11-20 * * * php /Users/dima/www/telbot/learningScript.php 406235431
-*/55 1-2 * * * php /Users/dima/www/telbot/learningScript.php 406235431
