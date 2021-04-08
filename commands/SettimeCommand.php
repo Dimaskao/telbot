@@ -141,6 +141,9 @@ class SettimeCommand extends UserCommand
                 
             case 3:
                 $this->conversation->update();
+                $data['text'] = 'here';
+                    $result = Request::sendMessage($data);
+                    break;
                 unset($notes['state']);
                 if ($this->SaveTimetable($notes, $user_id) === false) {
                     $this->conversation->stop();
@@ -190,6 +193,7 @@ class SettimeCommand extends UserCommand
 
     private function SaveTimetable(array $notes, int $user_id): string | bool
     {
+        return "here";
         $cron= shell_exec('crontab -l');
         $fp=fopen("cron.txt","w"); 
         fputs($fp, $cron);
