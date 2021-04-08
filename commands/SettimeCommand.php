@@ -150,7 +150,7 @@ class SettimeCommand extends UserCommand
                     break;
                 }
                 $this->conversation->stop();
-                $data['text'] = $savingResult;
+                $data['text'] = $savingResult . " @";
                 $result = Request::sendMessage($data);
                 break;
                 
