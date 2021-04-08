@@ -141,7 +141,8 @@ class SettimeCommand extends UserCommand
                 
             case 3:
                 $this->conversation->update();
-                $data['text'] = 'here';
+                $d = $this->SaveTimetable($notes, $user_id);
+                $data['text'] = $d;
                     $result = Request::sendMessage($data);
                     break;
                 unset($notes['state']);
