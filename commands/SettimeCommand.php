@@ -200,7 +200,7 @@ class SettimeCommand extends UserCommand
         fputs($fp, $cron);
         fclose($fp);
         $crontab = file('cron.txt');
-        return $crontab[1];
+        return $fp;
         foreach($crontab as $i => $row){
             if (strpos($row, $user_id) != 0) {
                 unset($crontab[$i]);
