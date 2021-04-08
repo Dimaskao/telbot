@@ -194,7 +194,7 @@ class SettimeCommand extends UserCommand
 
     private function SaveTimetable(array $notes, int $user_id): string | bool
     {
-        return "here";
+        
         $cron= shell_exec('crontab -l');
         $fp=fopen("cron.txt","w"); 
         fputs($fp, $cron);
@@ -206,7 +206,7 @@ class SettimeCommand extends UserCommand
                 
             }
         }
-
+        return "here";
         $cron_string = $notes['interval'] . ' ' . $notes['hours'] . ' * * ' . $notes['days'];
         exec('echo "'. implode("",$crontab).'" | crontab -');
         unlink('cron.txt');
