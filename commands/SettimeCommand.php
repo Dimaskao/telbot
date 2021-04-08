@@ -142,7 +142,6 @@ class SettimeCommand extends UserCommand
             case 3:
                 $this->conversation->update();
                 unset($notes['state']);
-                
                 if ($this->SaveTimetable($notes, $user_id) === false) {
                     $this->conversation->stop();
                     $data['text'] = 'Произошла ошибка, попробуйте еще раз';
@@ -191,21 +190,21 @@ class SettimeCommand extends UserCommand
 
     private function SaveTimetable(array $notes, int $user_id): string | bool
     {
-        $crontab = file('/var/spool/cron/crontabs/www-data');
-
+        $cron= shell_exec('crontab -l');
+        $fp=fopen("cron.txt","w"); 
+        fputs($fp, $cron);
+        fclose($fp);
+        $crontab = file('cron.txt');
         foreach($crontab as $i => $row){
             if (strpos($row, $user_id) != 0) {
-                unset($file[$i]);
-                $fp=fopen("file.txt","w"); 
-                fputs($fp,implode("",$crontab)); 
-                fclose($fp);
-                break;
+                unset($crontab[$i]);
+                
             }
         }
 
-
         $cron_string = $notes['interval'] . ' ' . $notes['hours'] . ' * * ' . $notes['days'];
-        exec('crontab -l | { cat; echo "#'. $user_id .'"; } | crontab -');
+        exec('echo "'. implode("",$crontab).'" | crontab -');
+        unlink('cron.txt');
         return exec('crontab -l | { cat; echo "'. $cron_string . ' php ' . getcwd() . '/learningScript.php ' . $user_id . '"; } | crontab -');
     }
 
