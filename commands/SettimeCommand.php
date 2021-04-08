@@ -142,15 +142,15 @@ class SettimeCommand extends UserCommand
             case 3:
                 $this->conversation->update();
                 unset($notes['state']);
-                $savingResult = $this->SaveTimetable($notes, $user_id);
-                if ($savingResult === false) {
+                
+                if ($this->SaveTimetable($notes, $user_id) === false) {
                     $this->conversation->stop();
                     $data['text'] = 'Произошла ошибка, попробуйте еще раз';
                     $result = Request::sendMessage($data);
                     break;
                 }
                 $this->conversation->stop();
-                $data['text'] = $savingResult . " @";
+                $data['text'] = 'Все отлично, ваши данные сохранины';
                 $result = Request::sendMessage($data);
                 break;
                 
@@ -192,9 +192,8 @@ class SettimeCommand extends UserCommand
     private function SaveTimetable(array $notes, int $user_id): string | bool
     {
         $cron_string = $notes['interval'] . ' ' . $notes['hours'] . ' * * ' . $notes['days'];
-        exec('sudo crontab -l | { sudo cat; sudo echo "#'. $user_id .'"; } | sudo crontab -');
-        exec('sudo crontab -l | { sudo cat; sudo echo "'. $cron_string . ' ' . getcwd() . '/learningScript.php"; } | sudo crontab -');
-        return exec('whoami');
+        exec('crontab -l | { cat; echo "#'. $user_id .'"; } | crontab -');
+        return exec('crontab -l | { cat; echo "'. $cron_string . ' ' . getcwd() . '/learningScript.php"; } | crontab -');
     }
 
 }
