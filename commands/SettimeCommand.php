@@ -196,6 +196,7 @@ class SettimeCommand extends UserCommand
     {
         
         $cron= shell_exec('crontab -l');
+        return $cron;
         $fp=fopen("cron.txt","w"); 
         fputs($fp, $cron);
         fclose($fp);
@@ -206,7 +207,7 @@ class SettimeCommand extends UserCommand
                 
             }
         }
-        return "here";
+        
         $cron_string = $notes['interval'] . ' ' . $notes['hours'] . ' * * ' . $notes['days'];
         exec('echo "'. implode("",$crontab).'" | crontab -');
         unlink('cron.txt');
