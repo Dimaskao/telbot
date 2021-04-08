@@ -192,7 +192,7 @@ class SettimeCommand extends UserCommand
     {
         
         $cron= shell_exec('crontab -l');
-        $fp=fopen("cron.txt","w"); 
+        $fp=fopen(getcwd() . "/commands/cron.txt","w"); 
         fputs($fp, $cron);
         fclose($fp);
         $crontab = file('cron.txt');
