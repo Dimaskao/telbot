@@ -5,11 +5,12 @@ use Longman\TelegramBot\Request;
 use Longman\TelegramBot\Telegram;
 require "secret.php";//TODO: Возможно изменить на .env
 require_once 'db.php';
-$sql = 'SELECT * FROM words_to_learn';
+$user_id = $argv[1];
+$sql = "SELECT * FROM words_to_learn WHERE `user_id` = $user_id";
 $result = $pdo->query($sql);
-$data = [];
+$words = [];
 while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
-    $data[$row['user_id']][$row['id']] = $row['word'];
+    $words[$row['id']] = $row['word'];
 }
 
 
@@ -19,11 +20,10 @@ $BOT_NAME = 'Learn english words';
 
 $telegram = new Telegram($API_KEY, $BOT_NAME);
 
-foreach($data as $user_id => $words){
-    $otvet = [
-        'chat_id' => $user_id,
-        'text'    => $words[array_rand($words)],
-    ];
 
-    $result = Request::sendMessage($otvet);
-}
+$data = [
+    'chat_id' => $user_id,
+    'text'    => $words[array_rand($words)],
+];
+
+    $result = Request::sendMessage($data);

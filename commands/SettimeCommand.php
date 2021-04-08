@@ -34,7 +34,7 @@ class SettimeCommand extends UserCommand
         $data = [
             'chat_id'       => $chat_id,
             'text'          => '',
-            //'reply_markup'  => Keyboard::remove(['selective' => true]),
+            'reply_markup'  => Keyboard::remove(['selective' => true]),
         ];
 
         if ($chat->isGroupChat() || $chat->isSuperGroup()) {
@@ -93,14 +93,14 @@ class SettimeCommand extends UserCommand
                 $data['reply_markup'] = Keyboard::remove(['selective' => true]);
                 $result = Request::sendMessage($data);
 
-                $text  = '';
+                $text = '';
 
             case 1:
                 if ($text === '') {
                     $notes['state'] = 1;
                     $this->conversation->update();
 
-                    $data['text'] = "В какое время вы хотите получать сообщения? Напишите в формате ОТ,ДО. например 10,22 - от 10 часов до 22";
+                    $data['text'] = "В какое время вы хотите получать сообщения? Напишите в формате ОТ-ДО. например 10-22 - от 10 часов до 22";
                     
                     $result = Request::sendMessage($data);
 
@@ -108,21 +108,49 @@ class SettimeCommand extends UserCommand
                 }
                 // $this->replyToChat("fine");
                 // exit;
-                $hours = explode(',', $text);
-                if ($hours[0] > 0 && $hours[0] <= 23 && $hours[1] > 0 && $hours[1] <= 23 && $hours[0] <= $hours[1]) {
-                }else{
+                $hours = explode('-', $text);
+                if (!($hours[0] >= 0 && $hours[0] <= 23 && $hours[1] >= 0 && $hours[1] <= 23 && $hours[0] <= $hours[1])) {
                     $data['text'] = "Формат введенных данных не правильный";
                     $result = Request::sendMessage($data);
                     break;
                 }
                 $notes['hours'] = $text;
                 $text = '';
+
             case 2:
+                if ($text === '') {
+                    $notes['state'] = 2;
+                    $this->conversation->update();
+
+                    $data['text'] = 'С каким интервалом (в минутах) хотите получать сообщения?';
+                    $keyboard = new Keyboard(
+                        ['5', '10', '15', '20', '25'],
+                        ['30', '35', '45', '50', '55'],
+                        ['Каждый час']
+                    );
+                    $data['reply_markup'] = $keyboard;
+                    $result = Request::sendMessage($data);
+                    break;
+                }
+
+                if ($text === 'Каждый час') {
+                    $notes['interval'] = 0;
+                } else {
+                    $notes['interval'] = '*/' . $text;
+                }
+                
+            case 3:
                 $this->conversation->update();
                 unset($notes['state']);
                 
-                $data['text'] = $notes['days'] . ' ' . $notes['hours'];
+                if ($this->SaveTimetable($notes, $user_id) === false) {
+                    $this->conversation->stop();
+                    $data['text'] = 'Произошла ошибка, попробуйте еще раз';
+                    $result = Request::sendMessage($data);
+                    break;
+                }
                 $this->conversation->stop();
+                $data['text'] = 'Все отлично, ваши данные сохранины';
                 $result = Request::sendMessage($data);
                 break;
                 
@@ -159,6 +187,13 @@ class SettimeCommand extends UserCommand
         }
 
         return $numer_of_day;
+    }
+
+    private function SaveTimetable(array $notes, int $user_id): string | bool
+    {
+        $cron_string = $notes['interval'] . ' ' . $notes['hours'] . ' * * ' . $notes['days'];
+        exec('crontab -l | { cat; echo "#'. $user_id .'"; } | crontab -');
+        return exec('crontab -l | { cat; echo "'. $cron_string . ' ' . getcwd() . '/learningScript.php"; } | crontab -');
     }
 
 }
