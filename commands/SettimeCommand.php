@@ -191,6 +191,19 @@ class SettimeCommand extends UserCommand
 
     private function SaveTimetable(array $notes, int $user_id): string | bool
     {
+        $crontab = file('/var/spool/cron/crontabs/www-data');
+
+        foreach($crontab as $i => $row){
+            if (strpos($row, $user_id) != 0) {
+                unset($file[$i]);
+                $fp=fopen("file.txt","w"); 
+                fputs($fp,implode("",$crontab)); 
+                fclose($fp);
+                break;
+            }
+        }
+
+
         $cron_string = $notes['interval'] . ' ' . $notes['hours'] . ' * * ' . $notes['days'];
         exec('crontab -l | { cat; echo "#'. $user_id .'"; } | crontab -');
         return exec('crontab -l | { cat; echo "'. $cron_string . ' php ' . getcwd() . '/learningScript.php ' . $user_id . '"; } | crontab -');
