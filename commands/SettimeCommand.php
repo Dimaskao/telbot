@@ -47,10 +47,8 @@ class SettimeCommand extends UserCommand
         !is_array($notes) && $notes = [];
 
         $state = $notes['state'] ?? 0;
-        if ( !isset($notes['days']) && !isset($notes['hours'])) {
-            $notes['days']  = '*';
-            $notes['hours'] = '10,20';
-        }
+        $notes['days']  = $notes['days'] ?? '*';// возможна ошибка
+        $notes['hours']  = $notes['hours'] ?? '10,20';
 
         switch ($state) {
             case 0:
@@ -101,13 +99,12 @@ class SettimeCommand extends UserCommand
                     $this->conversation->update();
 
                     $data['text'] = "В какое время вы хотите получать сообщения? Напишите в формате ОТ-ДО. например 10-22 - от 10 часов до 22";
-                    
+                    // 22 для крона 23 | надо исправить 
                     $result = Request::sendMessage($data);
 
                     break;
                 }
-                // $this->replyToChat("fine");
-                // exit;
+                
                 $hours = explode('-', $text);
                 if (!($hours[0] >= 0 && $hours[0] <= 23 && $hours[1] >= 0 && $hours[1] <= 23 && $hours[0] <= $hours[1])) {
                     $data['text'] = "Формат введенных данных не правильный";
@@ -190,9 +187,9 @@ class SettimeCommand extends UserCommand
 
     private function SaveTimetable(array $notes, int $user_id): string | bool
     {
-        
-        $cron= shell_exec('crontab -l');
-        $fp=fopen("cron.txt","w"); 
+        //переделать под БД
+        $cron = shell_exec('crontab -l');
+        $fp = fopen("cron.txt", "w"); 
         fputs($fp, $cron);
         fclose($fp);
         $crontab = file('cron.txt');
