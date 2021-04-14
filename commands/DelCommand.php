@@ -10,7 +10,7 @@ class DelCommand extends UserCommand
 {
     protected $name = 'del';
     protected $description = 'Удалеие слов';
-    protected $usage = '/del слово | Указывайте только одно слово!';
+    protected $usage = '/del слово на английском | Указывайте только одно слово !';
     protected $version = '1.0.0';
 
     public function execute(): ServerResponse
@@ -31,12 +31,12 @@ class DelCommand extends UserCommand
     private function DelWords($message, $user_id): void
     {
         if ($message == '') {
-            throw new \Exception("Пожалуйста, укажите слово которое хотите удалить");
+            throw new \Exception("Пожалуйста, укажите слово на английскойм которое хотите удалить");
         }
         $onlyWord = trim($message);
 
         require_once "db.php";
-        $sql = "DELETE FROM `words_to_learn` WHERE `word` = '$onlyWord' AND `user_id` = $user_id";
+        $sql = "DELETE FROM `words_to_learn` WHERE `en_word` = '$onlyWord' AND `user_id` = $user_id";
         $result = $pdo->exec($sql);
 
         if ( !$result ) {
