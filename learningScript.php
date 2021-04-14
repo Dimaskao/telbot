@@ -29,7 +29,7 @@ $wordObj = $words[array_rand($words)];
 if ($wordObj['number_of_displays'] > 10) {
     $lastWord = $wordObj['en_word'];
     $data['text'] = 'напишите перевод  **' . $wordObj['en_word'] . '**';
-    $sql = "UPDATE user SET is_active = false, last_word = '$lastWord' WHERE user_id = $user_id";
+    $sql = "UPDATE user SET is_active = false, last_word = '$lastWord' WHERE id = $user_id";
     $stmt = $pdo->prepare($sql);
     $result = $stmt->execute();
     if ( !$result ) {
