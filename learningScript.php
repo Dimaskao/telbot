@@ -27,7 +27,7 @@ $telegram = new Telegram($API_KEY, $BOT_NAME);
 $wordObj = $words[array_rand($words)];
 
 if ($wordObj['number_of_displays'] > 10) {
-    $lastWord = $wordObj['en_word'];
+    $lastWord = $wordObj['ru_word'];
     $data['text'] = 'напишите перевод  **' . $wordObj['en_word'] . '**';
     $sql = "UPDATE user SET is_active = false, last_word = '$lastWord' WHERE id = $user_id";
     $stmt = $pdo->prepare($sql);

@@ -102,7 +102,7 @@ class GenericmessageCommand extends SystemCommand
         }
 
         
-        $sql = "UPDATE user SET is_active = true, last_word = null WHERE user_id = $user_id";
+        $sql = "UPDATE user SET is_active = true, last_word = null WHERE id = $user_id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $data['text'] = "Правильно!";
