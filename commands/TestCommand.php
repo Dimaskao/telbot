@@ -34,13 +34,14 @@ class TestCommand extends UserCommand
             'text'          => '',
             'reply_markup'  => Keyboard::remove(['selective' => true]),
         ];
-
+        
         if ($chat->isGroupChat() || $chat->isSuperGroup()) {
             $data['reply_markup'] = Keyboard::forceReply(['selective' => true]);
         }
 
         $this->conversation = new Conversation($user_id, $chat_id, $this->getName());
-
+        $this->conversation->stop();
+        return $result;
         $notes = &$this->conversation->notes;
         !is_array($notes) && $notes = [];
 
@@ -75,6 +76,7 @@ class TestCommand extends UserCommand
                 unset($notes['state']);
                 $this->SaveWords($notes, $user_id);
                 $data['text'] = 'Слово "' . $notes['en_word'] . '" добавлено';
+                $this->conversation->stop();
                 $result = Request::sendMessage($data);
                 break;
         }

@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `first_name` CHAR(255) NOT NULL DEFAULT '' COMMENT 'User''s or bot''s first name',
   `last_name` CHAR(255) DEFAULT NULL COMMENT 'User''s or bot''s last name',
   `username` CHAR(191) DEFAULT NULL COMMENT 'User''s or bot''s username',
+  `is_active` boolean DEFAULT TRUE,
+  `last_word` char(255) DEFAULT NULL,
   `language_code` CHAR(10) DEFAULT NULL COMMENT 'IETF language tag of the user''s language',
   `created_at` timestamp NULL DEFAULT NULL COMMENT 'Entry date creation',
   `updated_at` timestamp NULL DEFAULT NULL COMMENT 'Entry date update',

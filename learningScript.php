@@ -10,9 +10,13 @@ $sql = "SELECT * FROM words_to_learn WHERE `user_id` = $user_id";
 $result = $pdo->query($sql);
 $words = [];
 while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
-    $words[$row['id']] = $row['word'];
+    $words[$row['id']] = $row;
 }
 
+$data = [
+    'chat_id' => $user_id,
+    'text'    => '',
+];
 
 
 $API_KEY  = $token;
@@ -20,10 +24,21 @@ $BOT_NAME = 'Learn english words';
 
 $telegram = new Telegram($API_KEY, $BOT_NAME);
 
+$wordObj = $words[array_rand($words)];
 
-$data = [
-    'chat_id' => $user_id,
-    'text'    => $words[array_rand($words)],
-];
+if ($wordObj['number_of_displays'] > 10) {
+    $lastWord = $wordObj['en_word'];
+    $data['text'] = 'напишите перевод  **' . $wordObj['en_word'] . '**';
+    $sql = "UPDATE user SET is_active = false, last_word = '$lastWord' WHERE user_id = $user_id";
+    $stmt = $pdo->prepare($sql);
+    $result = $stmt->execute();
+    if ( !$result ) {
+        $data['text'] = 'ops, fail';
+    }
+    return Request::sendMessage($data);
+}
 
-    $result = Request::sendMessage($data);
+$word = $wordObj['en_word'] . ' - ' . $wordObj['ru_word'];
+
+$data['text'] = $word;
+return Request::sendMessage($data);

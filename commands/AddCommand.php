@@ -33,7 +33,7 @@ class AddCommand extends UserCommand
             'text'          => '',
             'reply_markup'  => Keyboard::remove(['selective' => true]),
         ];
-
+        
         if ($chat->isGroupChat() || $chat->isSuperGroup()) {
             $data['reply_markup'] = Keyboard::forceReply(['selective' => true]);
         }
@@ -73,6 +73,7 @@ class AddCommand extends UserCommand
                 $this->conversation->update();
                 unset($notes['state']);
                 $this->SaveWords($notes, $user_id);
+                $this->conversation->stop();
                 $data['text'] = 'Слово "' . $notes['en_word'] . '" добавлено';
                 $result = Request::sendMessage($data);
                 break;
