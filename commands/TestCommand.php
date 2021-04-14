@@ -31,7 +31,7 @@ class TestCommand extends UserCommand
 
         $data = [
             'chat_id'       => $chat_id,
-            'text'          => 'start',
+            'text'          => '',
             'reply_markup'  => Keyboard::remove(['selective' => true]),
         ];
 
@@ -73,8 +73,8 @@ class TestCommand extends UserCommand
             case 2:
                 $this->conversation->update();
                 unset($notes['state']);
-
                 $this->SaveWords($notes, $user_id);
+                $data['text'] = 'Слово "' . $notes['en_word'] . '" добавлено';
                 $result = Request::sendMessage($data);
                 break;
         }
