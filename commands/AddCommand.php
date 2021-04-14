@@ -73,8 +73,8 @@ class AddCommand extends UserCommand
                 $this->conversation->update();
                 unset($notes['state']);
                 $this->SaveWords($notes, $user_id);
-                $this->conversation->stop();
                 $data['text'] = 'Слово "' . $notes['en_word'] . '" добавлено';
+                $this->conversation->stop();
                 $result = Request::sendMessage($data);
                 break;
         }

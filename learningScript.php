@@ -39,6 +39,10 @@ if ($wordObj['number_of_displays'] > 10) {
 }
 
 $word = $wordObj['en_word'] . ' - ' . $wordObj['ru_word'];
+$word_id = $wordObj['id'];
+$sql = "UPDATE words_to_learn SET number_of_displays = number_of_displays + 1 WHERE id = $word_id";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
 
 $data['text'] = $word;
 return Request::sendMessage($data);
