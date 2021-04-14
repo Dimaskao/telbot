@@ -89,7 +89,6 @@ class TestCommand extends UserCommand
         $number_of_displays = 0;
         require_once "db.php";
         //Убрать уязвимость инекций
-        $word = trim($word);
         $sql = "INSERT INTO words_to_learn (`user_id`, `en_word`, `ru_word`, `number_of_displays`) VALUES ($user_id, $en_word, $ru_word, $number_of_displays)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
