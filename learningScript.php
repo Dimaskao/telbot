@@ -6,9 +6,9 @@ use Longman\TelegramBot\Telegram;
 require "secret.php";//TODO: Возможно изменить на .env
 require_once 'db.php';
 $user_id = $argv[1];
-$sql = "SELECT * FROM words_to_learn WHERE `user_id` = $user_id";
+$sql = "SELECT * FROM words_to_learn WHERE `user_id` = $user_id; SELECT is_active FROM user WHERE `id` = $user_id";
 $result = $pdo->query($sql);
-if ($result->fetch(\PDO::FETCH_ASSOC)['is_active'] == false) {
+if (!$result->fetch(\PDO::FETCH_ASSOC)['is_active']) {
     exit;
 }
 $words = [];
