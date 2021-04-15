@@ -4,7 +4,7 @@ $driver = 'mysql';
 $host = 'localhost';
 $db_name = 'telbot';
 $db_user = 'root';
-$db_pass = '11111111';// root for host | 11111111 for desktop
+$db_pass = 'root';// root for host | 11111111 for desktop
 $charset = 'utf8';
 $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
 
