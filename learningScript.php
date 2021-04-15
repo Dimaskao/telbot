@@ -8,6 +8,8 @@ require_once 'db.php';
 $user_id = $argv[1];
 $sql = "SELECT * FROM words_to_learn WHERE `user_id` = $user_id; SELECT is_active FROM user WHERE `id` = $user_id";
 $result = $pdo->query($sql);
+print_r($result);
+exit;
 if (!$result->fetch(\PDO::FETCH_ASSOC)['is_active']) {
     exit;
 }
