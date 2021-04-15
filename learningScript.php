@@ -8,6 +8,9 @@ require_once 'db.php';
 $user_id = $argv[1];
 $sql = "SELECT * FROM words_to_learn WHERE `user_id` = $user_id";
 $result = $pdo->query($sql);
+if (!$result->fetch(\PDO::FETCH_ASSOC)['is_active']) {
+    exit;
+}
 $words = [];
 while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
     $words[$row['id']] = $row;
@@ -28,7 +31,7 @@ $wordObj = $words[array_rand($words)];
 
 if ($wordObj['number_of_displays'] >= 10) {
     $lastWord = $wordObj['ru_word'];
-    $data['text'] = 'напишите перевод  **' . $wordObj['en_word'] . '**';
+    $data['text'] = 'напишите перевод  **' . $wordObj['en_word'] . '**';//исправить выдиление слова
     $sql = "UPDATE user SET is_active = false, last_word = '$lastWord' WHERE id = $user_id";
     $stmt = $pdo->prepare($sql);
     $result = $stmt->execute();
