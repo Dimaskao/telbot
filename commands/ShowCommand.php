@@ -19,10 +19,10 @@ class ShowCommand extends UserCommand
         $chat_id = $message->getChat()->getId();
         $user_id = $message->getFrom()->getId();
         require_once 'db.php';
-        $result = $pdo->query("SELECT `word` FROM words_to_learn WHERE `user_id` = $user_id");
+        $result = $pdo->query("SELECT * FROM words_to_learn WHERE `user_id` = $user_id");
         $words = '';
         while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
-            $words .= ' | ' . $row['word'];
+            $words .= $row['en_word'] . ' - ' . $row['ru_word'] . PHP_EOL;
         }
         if(!$words){
             return $this->replyToChat("Вы еще не начали учить слова. Воспользуйтесь командой /add что бы добавить слова. Если больше одного слова, используйте ';' в качестве разделителя");

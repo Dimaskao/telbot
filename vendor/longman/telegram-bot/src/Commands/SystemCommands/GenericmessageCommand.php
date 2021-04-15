@@ -96,7 +96,7 @@ class GenericmessageCommand extends SystemCommand
 
         
         $word = $message->getText(true);
-        if ($word !== $lastWord) {
+        if (mb_strtolower($word) !== mb_strtolower($lastWord)) {
             $data['text'] = "Ошибочка, попробуйте еще раз!";
             return Request::sendMessage($data);
         }
