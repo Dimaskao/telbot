@@ -33,8 +33,10 @@ $telegram = new Telegram($API_KEY, $BOT_NAME);
 $wordObj = $words[array_rand($words)];
 
 if ($wordObj['number_of_displays'] >= 10) {
-    $lastWord = $wordObj['ru_word'];
-    $data['text'] = 'напишите перевод  **' . $wordObj['en_word'] . '**';
+    $wordLang = ruOrEnWord();
+    $lastWord = $wordObj[$wordLang];
+    $revertLang = revertLang($wordLang);
+    $data['text'] = 'напишите перевод  "*' . $wordObj[$revertLang] . '*"';
     $data['parse_mode'] = 'markdown';
     $sql = "UPDATE user SET is_active = false, last_word = '$lastWord' WHERE id = $user_id";
     $stmt = $pdo->prepare($sql);
@@ -53,3 +55,24 @@ $stmt->execute();
 
 $data['text'] = $word;
 return Request::sendMessage($data);
+
+function ruOrEnWord(): string
+{
+    switch(rand(1,2)){
+        case 1:
+            return 'ru_word';
+            break;
+        case 2:
+            return 'en_word';
+            break;
+    }
+}
+
+function revertLang($wordLang): string
+{
+    if ($wordLang === 'ru_word') {
+        return 'en_word';
+    }
+
+    return 'ru_word';
+}

@@ -48,7 +48,7 @@ class SettimeCommand extends UserCommand
 
         $state = $notes['state'] ?? 0;
         $notes['days']  = $notes['days'] ?? '*';// возможна ошибка
-        $notes['hours']  = $notes['hours'] ?? '10,20';
+        $notes['hours']  = $notes['hours'] ?? '10-20';
 
         switch ($state) {
             case 0:
