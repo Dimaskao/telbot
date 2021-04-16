@@ -16,7 +16,7 @@ class SettimeCommand extends UserCommand
     protected $name = 'settime';
     protected $description = 'Устанавливает время напоминания слов';
     protected $usage = '/settime';
-    protected $version = '1.0.0';
+    protected $version = '1.1.0';
     protected $conversation;
 
     public function execute(): ServerResponse
@@ -121,8 +121,8 @@ class SettimeCommand extends UserCommand
 
                     $data['text'] = 'С каким интервалом (в минутах) хотите получать сообщения?';
                     $keyboard = new Keyboard(
-                        ['5', '10', '15', '20', '25'],
-                        ['30', '35', '45', '50', '55'],
+                        ['5', '10', '15'],
+                        ['20', '25', '30'],
                         ['Каждый час']
                     );
                     $data['reply_markup'] = $keyboard;
