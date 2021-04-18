@@ -10,7 +10,7 @@ class DelCommand extends UserCommand
 {
     protected $name = 'del';
     protected $description = 'Удалеие слов';
-    protected $usage = '/del слово на английском | Указывайте только одно слово !';
+    protected $usage = '/del слово на английском | Указывайте только одно слово!';
     protected $version = '1.0.0';
 
     public function execute(): ServerResponse

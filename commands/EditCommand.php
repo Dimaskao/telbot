@@ -9,12 +9,12 @@ use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Entities\Keyboard;
 use Longman\TelegramBot\Conversation;
 
-class AddCommand extends UserCommand
+class EditCommand extends UserCommand
 {
-    protected $name = 'add';
-    protected $description = 'Добавление новых слов в словарь изучения.';
-    protected $usage = '/add слово - перевод; слово - перевод ...';
-    protected $version = '2.0.0';
+    protected $name = 'edit';
+    protected $description = 'Удалеие слов';
+    protected $usage = '/edit слово на английском | Указывайте только одно слово!';
+    protected $version = '1.0.0';
 
     public function execute(): ServerResponse
     {
@@ -51,7 +51,7 @@ class AddCommand extends UserCommand
                     $notes['state'] = 0;
                     $this->conversation->update();
 
-                    $data['text'] = "Напишите слово на английском";
+                    $data['text'] = "Какое слово(англиское) вы хотите изменить?";
                     $result = Request::sendMessage($data);
                     break;
                 } 
@@ -64,12 +64,23 @@ class AddCommand extends UserCommand
                     break;
                 }
 
-                $notes['en_word'] = $text;
+                $notes['word_to_edit'] = $text;
                 $text = '';
-
             case 1:
                 if ($text === '') {
                     $notes['state'] = 1;
+                    $this->conversation->update();
+
+                    $data['text'] = "Напишите слово на английском";
+                    $result = Request::sendMessage($data);
+                    break;
+                }
+
+                $notes['en_word'] = $text;
+                $text = '';
+            case 2:
+                if ($text === '') {
+                    $notes['state'] = 2;
                     $this->conversation->update();
 
                     $data['text'] = "Напишите перевод";
@@ -78,10 +89,10 @@ class AddCommand extends UserCommand
                 }
                 $notes['ru_word'] = $text;
             
-            case 2:
+            case 3:
                 $this->conversation->update();
                 unset($notes['state']);
-                $this->SaveWords($notes, $user_id);
+                $this->EditWords($notes, $user_id);
                 $data['text'] = 'Слово "' . $notes['en_word'] . '" добавлено';
                 $this->conversation->stop();
                 $result = Request::sendMessage($data);
@@ -94,22 +105,20 @@ class AddCommand extends UserCommand
     private function isWordExist($en_word, $user_id): void
     {
         require_once "db.php";
-        $result = $pdo->query("SELECT en_word FROM words_to_learn WHERE `user_id` = $user_id");
-        while($row = $result->fetch(\PDO::FETCH_ASSOC)){
-            if ($row['en_word'] === $en_word) {
-                throw new \Exception('Слово уже находится в списке, попробуйте другое');
-            }
+        $result = $pdo->query("SELECT en_word FROM words_to_learn WHERE `user_id` = $user_id AND `en_word` = '$en_word'");
+        if (!$result->fetch(\PDO::FETCH_ASSOC)) {
+            throw new \Exception('Слово изменено');
         }
     }
 
-    private function SaveWords($notes, $user_id): void
+    private function EditWords($notes, $user_id): void
     {
         $en_word = $notes['en_word'];
         $ru_word = $notes['ru_word'];
-        $number_of_displays = 0;
+        $word_to_edit = $notes['word_to_edit'];
         require_once "db.php";
         //Убрать уязвимость инекций
-        $sql = "INSERT INTO words_to_learn (`user_id`, `en_word`, `ru_word`, `number_of_displays`) VALUES ($user_id, '$en_word', '$ru_word', $number_of_displays)";
+        $sql = "UPDATE words_to_learn SET en_word = '$en_word', ru_word = '$ru_word' WHERE user_id = $user_id AND en_word = '$word_to_edit'";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 
