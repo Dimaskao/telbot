@@ -12,7 +12,7 @@ use Longman\TelegramBot\Conversation;
 class EditCommand extends UserCommand
 {
     protected $name = 'edit';
-    protected $description = 'Удалеие слов';
+    protected $description = 'Изменение слов';
     protected $usage = '/edit слово на английском | Указывайте только одно слово!';
     protected $version = '1.0.0';
 
@@ -51,7 +51,7 @@ class EditCommand extends UserCommand
                     $notes['state'] = 0;
                     $this->conversation->update();
 
-                    $data['text'] = "Какое слово(англиское) вы хотите изменить?";
+                    $data['text'] = "Какое слово(английское) вы хотите изменить?";
                     $result = Request::sendMessage($data);
                     break;
                 } 

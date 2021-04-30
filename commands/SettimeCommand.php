@@ -146,7 +146,7 @@ class SettimeCommand extends UserCommand
                     break;
                 }
                 $this->conversation->stop();
-                $data['text'] = 'Все отлично, ваши данные сохранины';
+                $data['text'] = 'Все отлично, ваши данные сохранены';
                 $result = Request::sendMessage($data);
                 break;
                 

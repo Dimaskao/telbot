@@ -25,7 +25,7 @@ class ShowCommand extends UserCommand
             $words .= $row['en_word'] . ' - ' . $row['ru_word'] . PHP_EOL;
         }
         if(!$words){
-            return $this->replyToChat("Вы еще не начали учить слова. Воспользуйтесь командой /add что бы добавить слова. Если больше одного слова, используйте ';' в качестве разделителя");
+            return $this->replyToChat("Вы еще не начали учить слова. Воспользуйтесь командой /add что бы добавить слова.");
         }
         
         return $this->replyToChat($words);

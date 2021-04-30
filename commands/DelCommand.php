@@ -9,7 +9,7 @@ use Longman\TelegramBot\Entities\ServerResponse;
 class DelCommand extends UserCommand
 {
     protected $name = 'del';
-    protected $description = 'Удалеие слов';
+    protected $description = 'Удаление слов';
     protected $usage = '/del слово на английском | Указывайте только одно слово!';
     protected $version = '1.0.0';
 
@@ -31,7 +31,7 @@ class DelCommand extends UserCommand
     private function DelWords($message, $user_id): void
     {
         if ($message == '') {
-            throw new \Exception("Пожалуйста, укажите слово на английскойм которое хотите удалить");
+            throw new \Exception("Пожалуйста, укажите слово на английском которое хотите удалить");
         }
         $onlyWord = trim($message);
 
