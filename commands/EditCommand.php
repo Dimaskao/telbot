@@ -107,7 +107,7 @@ class EditCommand extends UserCommand
         require_once "db.php";
         $result = $pdo->query("SELECT en_word FROM words_to_learn WHERE `user_id` = $user_id AND `en_word` = '$en_word'");
         if (!$result->fetch(\PDO::FETCH_ASSOC)) {
-            throw new \Exception('Слово изменено');
+            throw new \Exception('Слово не найдено');
         }
     }
 
